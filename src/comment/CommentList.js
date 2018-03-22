@@ -9,21 +9,21 @@ class CommentList extends React.Component{
 	}
 
 	handleCommentDel(index){
-		console.log(2, index)
 		this.props.onDelComment(index);
 	}
 
 	render() {
 			const comments = this.props.comments
 			return (
-					<div>
-							{comments.map(
-									(comment, i) => (
-											<Comment onDelComment={this.handleCommentDel.bind(this)} index={i} comment={comment} key={comment.createdTime || i} />
-									)
-							)}
-					</div>
+				<div>
+						{comments.map(
+								(comment, i) => (
+										<Comment onDelComment={this.handleCommentDel.bind(this)} index={i} comment={comment} key={comment.createdTime || i} />
+								)
+						)}
+				</div>
 			)
+			
 	}
 }
 

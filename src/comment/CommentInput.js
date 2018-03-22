@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import wrapWithLoadData from './wrapWithLoadData';
 
 class CommentInput extends React.Component{
     static propTypes = {
@@ -10,7 +10,7 @@ class CommentInput extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            username:'',
+            username:this.props.data || '',
             content:'',
             createdTime:''
         }
@@ -18,9 +18,10 @@ class CommentInput extends React.Component{
 
     componentDidMount(){
         this.textarea.focus();
-        this.setState({
-            username: localStorage.getItem("username")
-        })
+        //改为通过高阶函数实现
+        // this.setState({
+        //     username: localStorage.getItem("username")
+        // })
     }
 
     handleUserChange(e){
@@ -47,12 +48,14 @@ class CommentInput extends React.Component{
         })
     }
 
-    _saveUserNameToStorage(username){
-        localStorage.setItem("username", username);
-    }
+    //改为通过高阶函数实现
+    // _saveUserNameToStorage(username){
+    //     localStorage.setItem("username", username);
+    // }
 
     handleUserNameSave(e){
-        this._saveUserNameToStorage(e.target.value);
+        this.props.saveData(e.target.value)
+        // this._saveUserNameToStorage(e.target.value);
     }
 
     render(){
@@ -84,5 +87,5 @@ class CommentInput extends React.Component{
 
 }
 
-
+CommentInput = wrapWithLoadData(CommentInput, 'username')
 export default CommentInput;

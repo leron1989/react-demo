@@ -1,31 +1,33 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import CommentInput from './CommentInput';
 import CommentList from './CommentList';
+import wrapWithLoadData from './wrapWithLoadData';
 
 class CommentApp extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            comments:[]
+            comments:this.props.data || []
         }
+        console.log(this.state)
     }
 
-    componentWillMount(){
-        this._loadComments();
-    }
+    //改为通过高阶函数实现
+    // componentWillMount(){
+    //     this._loadComments();
+    // }
 
-    _loadComments(){
-        let comments = localStorage.getItem('comments')
-        if (comments) {
-            comments = JSON.parse(comments)
-            this.setState({ comments })
-        }
-    }
+    // _loadComments(){
+    //     let comments = localStorage.getItem('comments')
+    //     if (comments) {
+    //         comments = JSON.parse(comments)
+    //         this.setState({ comments })
+    //     }
+    // }
 
-    _saveComments(comments){
-        localStorage.setItem("comments", JSON.stringify(comments));
-    }
+    // _saveComments(comments){
+    //     localStorage.setItem("comments", JSON.stringify(comments));
+    // }
 
     handleCommentSubmit(comment){
         if (!comment) return
@@ -36,7 +38,8 @@ class CommentApp extends React.Component{
                 comment,
                 ...prevState.comments
             ];
-            this._saveComments(newComments);
+            // this._saveComments(newComments);
+            this.props.saveData(newComments);
             return {
                 comments:newComments
             }
@@ -44,7 +47,6 @@ class CommentApp extends React.Component{
     }
 
     handelCommentDel(index){
-        console.log(1, index)
         this.setState(function(prevState){
             const newComments = prevState.comments
             newComments.splice(index, 1)
@@ -68,4 +70,5 @@ class CommentApp extends React.Component{
     }
 }
 
-export default CommentApp;
+CommentApp = wrapWithLoadData(CommentApp, 'comments')
+export default CommentApp
